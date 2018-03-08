@@ -9,16 +9,32 @@ import rp.config.WheeledRobotConfiguration;
 import rp.systems.WheeledRobotSystem;
 import rp.util.Rate;
 
+/**
+ * The robot motion control class.
+ * 
+ * This class receives directions and moves the robot accordingly.
+ * 
+ * @author Marcos
+ */
 public class MotionController implements Movement {
 
-	// temporary values until calibration is added
+	/** Threshold for left sensor detecting line */
 	private int leftLineLimit;
+	/** Threshold for right sensor detecting line */
 	private int rightLineLimit;
 	private DifferentialPilot pilot;
 	private LightSensor leftSensor;
 	private LightSensor rightSensor;
+	/** Previous direction robot moved in (direction it's facing) */
 	private Direction previousDirection;
 
+	/**
+	 * Constructor 
+	 * 
+	 * @param educatorBot the robot configuration
+	 * @param port1 left light sensor in port1
+	 * @param port2 right light sensor in port2
+	 */
 	public MotionController(WheeledRobotConfiguration educatorBot, SensorPort port1, SensorPort port2) {
 		this.pilot = new WheeledRobotSystem(educatorBot).getPilot();
 		this.leftSensor = new LightSensor(port1);
@@ -27,9 +43,14 @@ public class MotionController implements Movement {
 		calibrateSensors();
 		leftLineLimit = leftSensor.getLightValue() - 25;
 		rightLineLimit = rightSensor.getLightValue() - 25;
-
 	}
-
+	
+	/**
+	 * The move method moves the robot in a specified direction.
+	 * 
+	 * @param direction The direction the robot needs to move in
+	 * @return True if the robot moves successfully, False if the robot ran into a problem moving
+	 */
 	@Override
 	public boolean move(Direction direction) {
 
@@ -105,7 +126,14 @@ public class MotionController implements Movement {
 		previousDirection = direction;
 		return travel(rotation);
 	}
-
+	
+	/**
+	 * This method rotates the desired amount and travels until it reaches a junction.
+	 * Used as a helper method for move.
+	 * 
+	 * @param rotation how many degrees to rotate 
+	 * @return True if a junction is reached, False if there is a problem reaching the junction;
+	 */
 	private boolean travel(int rotation) {
 		boolean junction = false;
 
@@ -130,7 +158,6 @@ public class MotionController implements Movement {
 				pilot.steer(50);
 			} else if (rightValue < rightLineLimit) {
 				pilot.steer(-50);
-				;
 			} else {
 				pilot.steer(0);
 			}
@@ -142,14 +169,14 @@ public class MotionController implements Movement {
 		return true;
 	}
 
-	// calibrates the sensors on startup.
+	/**
+	 * This method calibrates the light sensors.
+	 */
 	private void calibrateSensors() {
-
-		System.out.println("Put both sensors on a black line and press a button.");
+		System.out.println("Calibrating sensors...");
 		Delay.msDelay(300);
 		leftSensor.calibrateHigh();
 		rightSensor.calibrateHigh();
-
 		System.out.println("Sensors have been calibrated!");
 	}
 
