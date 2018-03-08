@@ -2,20 +2,13 @@ package rp.warehouse.pc.gui;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Queue;
-
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
-import javax.swing.plaf.basic.BasicScrollBarUI;
 
 import lejos.robotics.RangeFinder;
 import rp.robotics.MobileRobotWrapper;
-import rp.robotics.control.RandomGridWalk;
 import rp.robotics.mapping.*;
 import rp.robotics.navigation.*;
 import rp.robotics.simulation.*;
@@ -39,20 +32,29 @@ public class WarehouseInterface {
 		GridMap gridMap = getMap();
 		MapBasedSimulation sim = new MapBasedSimulation(gridMap);
 
-		for (rp.warehouse.pc.data.Robot robot : robots) {
+		for (Robot robot : robots) {
 			robotStart.add(getPose(robot));
 		}
 
-		for (GridPose start : robotStart) {
+		for (Robot robot : robots) {
+			GridPose start = getPose(robot);
+			
 			MobileRobotWrapper<MovableRobot> wrapper = sim.addRobot(SimulatedRobots.makeConfiguration(false, true),
 					gridMap.toPose(start));
+			
+			RangeFinder ranger = sim.getRanger(wrapper);
 
-			GridWalk controller = new GridWalk(wrapper.getRobot(), gridMap, start);
+			GridWalk controller = new GridWalk(wrapper.getRobot(), gridMap, start, ranger, robot.getRoute());
 
 			new Thread(controller).start();
 		}
 
-		WarehouseMapVisualisation mapVis = new WarehouseMapVisualisation(gridMap, gridMap, 150f, items);
+		ArrayList<Location> locations = new ArrayList<>();
+		for(Item i: items){
+			Location l = i.getLocation();
+			locations.add(l);
+		}
+		WarehouseMapVisualisation mapVis = new WarehouseMapVisualisation(gridMap, gridMap, 150f, locations);
 		MapVisualisationComponent.populateVisualisation(mapVis, sim);
 
 		displayVisualisation(mapVis);

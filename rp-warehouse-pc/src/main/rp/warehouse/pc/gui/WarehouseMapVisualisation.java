@@ -3,7 +3,6 @@ package rp.warehouse.pc.gui;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 import java.util.ArrayList;
 
@@ -20,20 +19,21 @@ public class WarehouseMapVisualisation extends GridMapVisualisation {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private ArrayList<Item> items = new ArrayList<>();
+	private ArrayList<Location> locations = new ArrayList<>();
 
 	// in world units
 	private static final float ITEM_RADIUS = 0.04f;
 
-	public WarehouseMapVisualisation(IGridMap _gridMap, LineMap _lineMap, float _scaleFactor, ArrayList<Item> _items) {
+	public WarehouseMapVisualisation(IGridMap _gridMap, LineMap _lineMap, float _scaleFactor, ArrayList<Location> _locations) {
 		super(_gridMap, _lineMap, _scaleFactor);
-		this.items = _items;
+		locations = _locations;
 	}
 	
 	public boolean hasItem(int x, int y) {
-		Location l = new Location(x, y);
-		for(Item i: items){
-			if(l.equals(i.getLocation())){
+		for(Location l: locations){
+			int itemX = l.getX();
+			int itemY = l.getY();
+			if(x == itemX && y == itemY){
 				return true;
 			}
 		}
