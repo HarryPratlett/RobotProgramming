@@ -16,7 +16,7 @@ import rp.robotics.visualisation.*;
 import rp.warehouse.pc.communication.Protocol;
 import rp.warehouse.pc.data.*;
 
-public class WarehouseInterface {
+public class WarehouseInterface extends Thread{
 
 	private ArrayList<Robot> robots = new ArrayList<>();
 	private ArrayList<GridPose> robotStart = new ArrayList<>();
