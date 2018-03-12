@@ -180,4 +180,11 @@ public class MotionController implements Movement {
 		System.out.println("Sensors have been calibrated!");
 	}
 
+	/**
+	*Rotates the robot at right angles.
+	*Used by localisation,
+	*/
+	public void rotate() {
+		pilot.rotate(90);
+	}
 }
