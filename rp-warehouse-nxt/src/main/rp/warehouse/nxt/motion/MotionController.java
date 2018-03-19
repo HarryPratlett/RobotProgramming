@@ -11,9 +11,9 @@ import rp.util.Rate;
 
 /**
  * The robot motion control class.
- * 
+ *
  * This class receives directions and moves the robot accordingly.
- * 
+ *
  * @author Marcos
  */
 public class MotionController implements Movement {
@@ -29,8 +29,8 @@ public class MotionController implements Movement {
 	private Direction previousDirection;
 
 	/**
-	 * Constructor 
-	 * 
+	 * Constructor
+	 *
 	 * @param educatorBot the robot configuration
 	 * @param port1 left light sensor in port1
 	 * @param port2 right light sensor in port2
@@ -41,13 +41,14 @@ public class MotionController implements Movement {
 		this.rightSensor = new LightSensor(port2);
 		this.previousDirection = Direction.NORTH;
 		calibrateSensors();
-		leftLineLimit = leftSensor.getLightValue() - 25;
-		rightLineLimit = rightSensor.getLightValue() - 25;
+		leftLineLimit = leftSensor.getLightValue() - 15;
+		rightLineLimit = rightSensor.getLightValue() - 15;
+
 	}
-	
+
 	/**
 	 * The move method moves the robot in a specified direction.
-	 * 
+	 *
 	 * @param direction The direction the robot needs to move in
 	 * @return True if the robot moves successfully, False if the robot ran into a problem moving
 	 */
@@ -126,19 +127,19 @@ public class MotionController implements Movement {
 		previousDirection = direction;
 		return travel(rotation);
 	}
-	
+
 	/**
 	 * This method rotates the desired amount and travels until it reaches a junction.
 	 * Used as a helper method for move.
-	 * 
-	 * @param rotation how many degrees to rotate 
+	 *
+	 * @param rotation how many degrees to rotate
 	 * @return True if a junction is reached, False if there is a problem reaching the junction;
 	 */
 	private boolean travel(int rotation) {
 		boolean junction = false;
 
 		pilot.rotate(rotation);
-		pilot.setTravelSpeed(0.1);
+		pilot.setTravelSpeed(0.12);
 		pilot.forward();
 
 		Rate r = new Rate(20);
@@ -155,9 +156,10 @@ public class MotionController implements Movement {
 			}
 			// check is robot has gone off the line and adjust
 			else if (leftValue < leftLineLimit) {
-				pilot.steer(50);
+				pilot.steer(42);
 			} else if (rightValue < rightLineLimit) {
-				pilot.steer(-50);
+				pilot.steer(-42);
+				;
 			} else {
 				pilot.steer(0);
 			}
@@ -180,9 +182,6 @@ public class MotionController implements Movement {
 		System.out.println("Sensors have been calibrated!");
 	}
 
-	/**
-	* Rotates robot 90 degress. Used by localisation.
-	*/
 	public void rotate() {
 		pilot.rotate(90);
 	}
