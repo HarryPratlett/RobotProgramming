@@ -105,7 +105,7 @@ public class RobotInterfaceController {
 			case LEFT:
 				if (jobAmount > 0)	{
 					LCD.drawString("Pickup amount: " + toPickup, TEXT_WIDTH, TEXT_HEIGHT);
-					LCD.drawString("Amount: " + (--jobAmount), TEXT_WIDTH, TEXT_HEIGHT);
+					LCD.drawString("Amount: " + (--jobAmount), TEXT_WIDTH+1, TEXT_HEIGHT+1);
 				}
 				else	{
 					LCD.drawString("Error: Items cannot go below zero", TEXT_WIDTH, TEXT_HEIGHT);
@@ -113,7 +113,7 @@ public class RobotInterfaceController {
 				break;
 			case RIGHT:
 				LCD.drawString("Pickup amount: " + toPickup, TEXT_WIDTH, TEXT_HEIGHT);
-				LCD.drawString("Amount: " + (++jobAmount), TEXT_WIDTH, TEXT_HEIGHT);
+				LCD.drawString("Amount: " + (++jobAmount), TEXT_WIDTH, TEXT_HEIGHT+1);
 				break;
 		}
 	}
