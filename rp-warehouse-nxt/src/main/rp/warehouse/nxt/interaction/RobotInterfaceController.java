@@ -2,8 +2,6 @@ package rp.warehouse.nxt.interaction;
 import rp.warehouse.nxt.communication.*;
 import lejos.nxt.*;
 
-import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  * @author Harry Pratlett
@@ -42,7 +40,6 @@ public class RobotInterfaceController {
 	 * command sent is changed depending on which one is pressed */
 	private void main() {
 		timer = new Timeout(communicator);
-		timer.start();
 		Button.ENTER.addButtonListener(new ButtonListener()	{
 			@Override
 			public void buttonPressed(Button b) {
@@ -86,7 +83,7 @@ public class RobotInterfaceController {
 	/*This method changes the display based on what the user presses */
 	/** @param buttonInput This is the button that has been pressed, represented in an integer form **/
 	private void displayScreen(int buttonInput) {
-		LCD.clearDisplay();
+		LCD.clear();
 		LCD.refresh();
 		switch (buttonInput)	{
 			case Protocol.OK:
