@@ -175,6 +175,7 @@ public class Ranges {
 	 * 
 	 * @return a copy of this ranges object, same value, different reference.
 	 */
+	@Override
 	public Ranges clone() {
 		return new Ranges(ranges[0], ranges[1], ranges[2], ranges[3]);
 	}

@@ -1,7 +1,6 @@
 package rp.warehouse.nxt.localisation;
 
 import lejos.nxt.SensorPort;
-import lejos.nxt.UltrasonicSensor;
 import lejos.nxt.addon.OpticalDistanceSensor;
 import lejos.util.Delay;
 import rp.warehouse.nxt.motion.MotionController;
