@@ -42,7 +42,7 @@ public class RobotInterfaceController {
 	 * command sent is changed depending on which one is pressed */
 	private void main() {
 		timer = new Timeout(communicator);
-		timer.run();
+		timer.start();
 		Button.ENTER.addButtonListener(new ButtonListener()	{
 			@Override
 			public void buttonPressed(Button b) {
